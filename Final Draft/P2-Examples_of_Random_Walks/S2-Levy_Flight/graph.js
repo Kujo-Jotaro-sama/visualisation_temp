@@ -53,7 +53,8 @@ let layout = {
 
 Plotly.newPlot(graph, {
     data: data0,
-    layout: layout
+    layout: layout,
+    config: {responsive: true}
 });
 
 //animation logics for sliders

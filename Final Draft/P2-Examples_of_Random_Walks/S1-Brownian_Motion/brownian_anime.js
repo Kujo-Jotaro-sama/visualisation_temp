@@ -162,7 +162,7 @@ Plotly.newPlot(flight, {
         marker: {size: Params.markerSize},
         name: 'pointer'
     }
-    ]}, {}, {showSendToCloud:true});
+    ], config: {responsive: true}}, {}, {showSendToCloud:true});
 
 function tracing (i, xData, yData) {
     let newXData = xData.slice(0, i);
@@ -228,7 +228,7 @@ function startAnimation(stepNumber=5000, sigma=sigmaSlider.value) {
             x: [xData[0]],
             y: [yData[0]],
             marker: {size: Params.markerSize}
-        }]}, {}, {showSendToCloud:true});
+        }], config: {responsive: true}}, {}, {showSendToCloud:true});
 
     Plotly.newPlot(graph, {
         data: [{
@@ -253,7 +253,7 @@ function startAnimation(stepNumber=5000, sigma=sigmaSlider.value) {
                 range: [0, autoRangeMath(sigmaSlider.value)[2]],
                 title: {text: 'Probability Density'}
             }
-        }
+        }, config: {responsive: true}
     });
 
     while (i < stepNumber + 1) {
@@ -275,7 +275,7 @@ function startAnimation(stepNumber=5000, sigma=sigmaSlider.value) {
 function stop() {
     if (typeof(animeData) === 'undefined') {
         alert("You haven't started the animation yet!")
-    };
+    } else {
 
     Plotly.newPlot(flight, {
         data: [{
@@ -296,7 +296,7 @@ function stop() {
         layout: {
             xaxis: {range: [-1, 1]},
             yaxis: {range:  [-1, 1]}
-        }}, {}, {showSendToCloud:true});
+        }, config: {responsive: true}}, {}, {showSendToCloud:true});
 
     Plotly.animate(graph, {
         data: [{
@@ -312,8 +312,15 @@ function stop() {
             x: []
         }],
         layout: {
-            xaxis: {range: [0, 3.86]},
-            yaxis: {range: [0, 0.6166744431634955]}
+            title: 'Probability Density Function of the Flight Step Width',
+            xaxis: {
+                range: [46.28, 53.72],
+                title: {text: 'Step Width'}
+            },
+            yaxis: {
+                range: [0, 0.5319230405352435],
+                title: {text: 'Probability Density'}
+            }
         }
     }, {
         transition: {
@@ -334,6 +341,7 @@ function stop() {
     sigmaSlider.disabled = false;
     sigmaSlider.value = 1;
     sigmaText.innerHTML = 'sigma: 1';
+}
 };
 
 function skipAnimation(animationGraph=animeData) {
@@ -363,7 +371,7 @@ function skipAnimation(animationGraph=animeData) {
             marker: {size: Params.markerSize}
         }], layout: {
             xaxis: {range: [-xRange, xRange]},
-            yaxis: {range: [-yRange, yRange]}}}, {}, {showSendToCloud:true});
+            yaxis: {range: [-yRange, yRange]}}, config: {responsive: true}}, {}, {showSendToCloud:true});
 
     Plotly.react(graph, {
         data: [{
@@ -425,7 +433,7 @@ function hidePath(animationGraph=animeData) {
             marker: {size: Params.markerSize}
         }], layout: {
             xaxis: {range: [-xRange, xRange]},
-            yaxis: {range: [-yRange, yRange]}}}, {}, {showSendToCloud:true});
+            yaxis: {range: [-yRange, yRange]}}, config: {responsive: true}}, {}, {showSendToCloud:true});
 };
 
 pathButton.onclick = function() {

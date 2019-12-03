@@ -92,7 +92,8 @@ function setup() {
         layout: {
             title: 'Probability Density Function of the Flight Step Width',
             xaxis: {title: {text: 'Step Width'}},
-            yaxis: {title: {text: 'Probability Density'}}}
+            yaxis: {title: {text: 'Probability Density'}}},
+        config: {responsive: true}
     });
 
     Plotly.newPlot(flight, {
@@ -109,7 +110,7 @@ function setup() {
             x: [0],
             y: [0],
             marker: {size: Params.markerSize}
-        }]}, {}, {showSendToCloud:true});
+        }], config: {responsive: true}}, {}, {showSendToCloud:true});
 
     window.yData0 = yData0;
     xScaleSlider.disabled = true;
@@ -268,7 +269,7 @@ function startButton() {
             x: [0],
             y: [0],
             marker: {size: Params.markerSize}
-        }]}, {}, {showSendToCloud:true});
+        }], config: {responsive: true}}, {}, {showSendToCloud:true});
 
     xScaleSlider.value = 1;
     xText.innerHTML = 'x scale: 1';
@@ -420,7 +421,7 @@ function startAnimation(stepNumber=5000) {
                 x: [0],
                 y: [0],
                 marker: {size: Params.markerSize}
-            }]}, {}, {showSendToCloud:true});
+            }], config: {responsive: true}}, {}, {showSendToCloud:true});
         
         while (i < stepNumber + 1) {
             tracing(i, xDataAnime, yDataAnime);
@@ -564,11 +565,9 @@ function stop() {
     if (hasPushed === false) {
         alert("You haven't pushed a valid function yet!")
         return;
-    };
-    
-    if (typeof(animeData) === 'undefined') {
+    } else if (typeof(animeData) === 'undefined') {
         alert("You haven't started the animation yet!")
-    };
+    } else {
 
     Plotly.newPlot(flight, {
         data: [{
@@ -589,7 +588,7 @@ function stop() {
         layout: {
             xaxis: {range: [-1, 1]},
             yaxis: {range:  [-1, 1]}
-        }}, {}, {showSendToCloud:true});
+        }, config: {responsive: true}}, {}, {showSendToCloud:true});
 
     Plotly.react(graph, {
         data: [{
@@ -612,6 +611,7 @@ function stop() {
     hasSkipped = false;
     xScaleSlider.disabled = false;
     pushButton.disabled = true;
+}
 };
 
 function skipAnimation(animationGraph=animeData) {
@@ -646,7 +646,7 @@ function skipAnimation(animationGraph=animeData) {
             marker: {size: Params.markerSize}
         }], layout: {
             xaxis: {range: [-xRange, xRange]},
-            yaxis: {range: [-yRange, yRange]}}}, {}, {showSendToCloud:true});
+            yaxis: {range: [-yRange, yRange]}}, config: {responsive: true}}, {}, {showSendToCloud:true});
 
     Plotly.react(graph, {
         data: [{
@@ -705,7 +705,7 @@ function hidePath(animationGraph=animeData) {
             marker: {size: Params.markerSize}
         }], layout: {
             xaxis: {range: [-xRange, xRange]},
-            yaxis: {range: [-yRange, yRange]}}}, {}, {showSendToCloud:true});
+            yaxis: {range: [-yRange, yRange]}}, config: {responsive: true}}, {}, {showSendToCloud:true});
 };
 
 pathButton.onclick = function() {

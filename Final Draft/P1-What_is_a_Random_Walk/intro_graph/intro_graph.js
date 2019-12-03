@@ -34,7 +34,7 @@ function dataPreparation(stepNumber) {
 //setting params
 let Params = {
     frameRate: 1000,
-    markerSize: 9
+    markerSize: 15
 };
 
 let flight = document.getElementById('flight');
@@ -51,8 +51,8 @@ Plotly.newPlot(flight, {
         marker: {size: Params.markerSize},
         name: 'pointer'}
     ], layout: {
-        xaxis: {range: [-5, 5]}
-    }}, {}, {showSendToCloud:true});
+        xaxis: {range: [-5, 5]},
+    }, config: {responsive: true}}, {}, {showSendToCloud:true});
 
 function tracing (i, Data) {
     let newData = Data.slice(0, i);
@@ -111,26 +111,30 @@ function startAnimation(stepNumber=5000) {
     animeData = info.slice(0, 2);
     stepWidthData = incrementData;
 
+    //funcAdjustInt.coinFlip();
+
     console.timeEnd('timer1');
 };
 
-function toss(value) {
+/*function toss(value) {
     if (value === 1) {
         coin.src = "Pound_coin_front.png";
     }
     else if (value === -1) {
         coin.src = "Pound_coin_back.png";
     }
-};
+};*/
+
+
 
 /*function tossAnime() {
     coin.src='./Pound_coin_front.png';
     setTimeout(function() {
         coin.src='./Pound_coin_back.png'
     }, 1);
-}
+}*/
 
-function generateToss() {
+/*function generateToss() {
     let n = 0;
     let tempID = setInterval(function() {
         tossAnime();
@@ -141,10 +145,46 @@ function generateToss() {
     }, 2)
 }*/
 
-startAnimation();
-
 /*let n = 0;
-setInterval(function() {
-    toss(stepWidthData[n]);
-    n+=1;
-}, 1000);*/
+    setInterval(function() {
+        toss(stepWidthData[n]);
+        n+=1;
+    }, 1000);*/
+    /*class AdjustingInterval {
+        constructor(interval) {
+            var that = this;
+            var expected, timeout;
+            this.interval = interval;
+            this.n = 0;
+            this.start = function () {
+                expected = Date.now() + this.interval;
+                timeout = setTimeout(step, this.interval);
+            };
+            this.stop = function () {
+                clearTimeout(timeout);
+            };
+            function step() {
+                var drift = Date.now() - expected;
+                if (drift > that.interval) {
+                    errorFunc()} else {
+                    coinFlip(n);
+                    expected += that.interval;
+                    timeout = setTimeout(step, Math.max(0, that.interval - drift));
+                }
+            }
+            ;
+            function coinFlip() {
+                toss(stepWidthData[this.n]);
+                this.n += 1;
+            }
+            ;
+            function errorFunc() {
+                console.warn('The picture has grown out of sync.');
+            }
+            ;
+        }
+    };
+
+let funcAdjustInt = new AdjustingInterval(1000);*/
+
+startAnimation();
