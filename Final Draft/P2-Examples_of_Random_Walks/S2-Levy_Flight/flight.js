@@ -134,7 +134,7 @@ Plotly.newPlot(flight, {
         marker: {size: Params.markerSize},
         name: 'pointer'
     }
-    ]}, {}, {showSendToCloud:true});
+    ], config: {responsive: true}}, {}, {showSendToCloud:true});
 
 function tracing (i, xData, yData) {
     let newXData = xData.slice(0, i);
@@ -200,7 +200,7 @@ function startAnimation(stepNumber=5000, d=dSlider.value) {
             x: [xData[0]],
             y: [yData[0]],
             marker: {size: Params.markerSize}
-        }]}, {}, {showSendToCloud:true});
+        }], config: {responsive: true}}, {}, {showSendToCloud:true});
 
     Plotly.newPlot(graph, {
         data: [{
@@ -225,7 +225,7 @@ function startAnimation(stepNumber=5000, d=dSlider.value) {
                 range: [0, autoRangeMath(dSlider.value)[1]],
                 title: {text: 'Probability Density'}
             }
-        }
+        }, config: {responsive: true}
     });
 
     while (i < stepNumber + 1) {
@@ -247,7 +247,7 @@ function startAnimation(stepNumber=5000, d=dSlider.value) {
 function stop() {
     if (typeof(animeData) === 'undefined') {
         alert("You haven't started the animation yet!")
-    };
+    } else {
 
     Plotly.newPlot(flight, {
         data: [{
@@ -268,7 +268,7 @@ function stop() {
         layout: {
             xaxis: {range: [-1, 1]},
             yaxis: {range:  [-1, 1]}
-        }}, {}, {showSendToCloud:true});
+        }, config: {responsive: true}}, {}, {showSendToCloud:true});
 
     Plotly.animate(graph, {
         data: [{
@@ -306,6 +306,7 @@ function stop() {
     dSlider.disabled = false;
     dSlider.value = 0.5;
     dText.innerHTML = 'd: 0.5';
+}
 };
 
 function skipAnimation(animationGraph=animeData) {
@@ -335,7 +336,7 @@ function skipAnimation(animationGraph=animeData) {
             marker: {size: Params.markerSize}
         }], layout: {
             xaxis: {range: [-xRange, xRange]},
-            yaxis: {range: [-yRange, yRange]}}}, {}, {showSendToCloud:true});
+            yaxis: {range: [-yRange, yRange]}}, config: {responsive: true}}, {}, {showSendToCloud:true});
 
     Plotly.react(graph, {
         data: [{
@@ -397,7 +398,7 @@ function hidePath(animationGraph=animeData) {
             marker: {size: Params.markerSize}
         }], layout: {
             xaxis: {range: [-xRange, xRange]},
-            yaxis: {range: [-yRange, yRange]}}}, {}, {showSendToCloud:true});
+            yaxis: {range: [-yRange, yRange]}}, config: {responsive: true}}, {}, {showSendToCloud:true});
 };
 
 pathButton.onclick = function() {

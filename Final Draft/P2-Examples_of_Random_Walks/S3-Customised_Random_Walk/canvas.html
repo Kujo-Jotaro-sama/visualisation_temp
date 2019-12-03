@@ -28,33 +28,38 @@
     </script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js'></script>
+    <script language="javascript" type="text/javascript" src="./p5.dom.js"></script>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 </head>
 
 <body>
 
-    <div id='flight'></div>
-    <button onclick="javascript:startAnimation();">start</button>
-    <button onclick='javascript:skipAnimation();'>skip</button>
-    <button onclick="javascript:stop();">clear</button>
-    <button id='path-button' style='visibility: hidden'>hide path</button>
+    <div id='canvas'></div>
 
-    <div id='d-text'>d: 0.5</div>
+    <button onclick="javascript:stopButton();" id='push-button'>push</button>
+    <button onclick="javascript:startButton();">refresh</button>
+
+    <div id='plotly-pdf'></div>
     <div>
-        <input type="range" min="0.1" max="1.9" value="0.5", step='0.1', id='d-slider'>
+        <p id='x-scale-text'>x scale: 1</p>
+        <input type="range" min="0.1" max="10" value="1", step='0.1', id='x-scale-slider'>
     </div>
 
-    <div id='pdf'></div>
-
-    <script defer src='./flight.js'></script>
-    <script defer src='./graph.js'></script>
+    <div id='flight'></div>
+    <button id='start-button' onclick="javascript:startAnimation();">start</button>
+    <button id='skip-button' onclick='javascript:skipAnimation();'>skip</button>
+    <button id='stop-anime-button' onclick="javascript:stop();">clear</button>
+    <button id='path-button' style='visibility: hidden'>hide path</button>
 
     <!--Inner page navigator-->
     <nav>
-        <a href="../S1 - Brownian Motion/brownian_motion.html"><button>Brownian Motion</button></a>
-        <button><strong>Lévy Flight</strong></button>
-        <a href="../S3 - Customised Random Walk/canvas.html"><button>Customise Functions</button></a>
+        <a href="../S1-Brownian_Motion/brownian_motion.html"><button>Brownian Motion</button></a>
+        <a href="../S2-Levy_Flight/levy_flight_graphs.html"><button>Lévy Flight</button></a>
+        <button><strong>Customise Functions</strong></button>
     </nav>
+
+    <script defer src='./canvas.js'></script>
 
     <!--Navigator here.-->
     <script> let pages = ["1What is a Random Walk?.html", "2Examples of Random Walks.html"]</script>
