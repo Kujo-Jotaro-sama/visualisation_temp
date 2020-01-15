@@ -25,9 +25,7 @@ function dataPreparation(stepNumber) {
         Data.push(newValue);
     };
 
-    let Range = Math.ceil(Math.max(Math.abs(Math.min(...Data)), Math.abs(Math.max(...Data))));
-
-    return [Data, Range, incrementData];
+    return [Data, incrementData];
 };
 
 //Animation
@@ -37,9 +35,31 @@ let Params = {
     markerSize: 15
 };
 
+let coinFlip = {
+    front: function() {
+        coin.src = 'Pound_coin_front.png';
+    },
+    back: function() {
+        coin.src = 'Pound_coin_back.png';
+    }
+}
+
 let flight = document.getElementById('flight');
+let graph = document.getElementById('graph');
 let coin = document.getElementById('coin');
-let stepWidthData; //stores step width data that is useful in the counting functionality
+let tossOnceButton = document.getElementById('tossOnceButton');
+let tossMultipleButton = document.getElementById('tossMultipleButton');
+let numberOfTosses = document.getElementById('numberOfTosses');
+let text = document.getElementById('text');
+let hiddenText = document.getElementById('hiddenText');
+
+let currentPos = 0;
+let hasTriedMultiple = false;
+let xData = [];
+
+coin.style.width = "500px";
+hiddenText.style.backgroundColor = 'black';
+hiddenText.style.color = 'black';
 
 
 Plotly.newPlot(flight, {
@@ -76,115 +96,195 @@ function tracing (i, Data) {
     }, {
         transition: {
             duration: Params.frameRate * 0.8,
-            easing: 'cubic-in-out'
+            easing: 'linear-in-out'
         }, frame: {duration: Params.frameRate,
         redraw: false}
     });
 };
 
 //buttons and sliders
-function startAnimation(stepNumber=5000) {
-    console.time('timer1');
 
-    let i = 1;
-    let info = dataPreparation(stepNumber);
-    let Data = info[0];
-    incrementData = info[2]
+function coinTossOnce() {
+    if (hasTriedMultiple === true) {
+        if (confirm('This will wipe away the arrays you have generated. Is that okay?')) {
+        Plotly.newPlot(flight, {
+            data: [{
+                mode: 'markers',
+                type: 'scatter',
+                x: [0],
+                y: [0],
+                marker: {size: Params.markerSize},
+                name: 'pointer'}
+            ], layout: {
+                xaxis: {range: [-5, 5]},
+            }, config: {responsive: true}}, {}, {showSendToCloud:true});
+        hasTriedMultiple = false;
 
-    Plotly.newPlot(flight, {
-        data: [{
-            mode: 'markers',
-            type: 'scatter',
-            name: 'pointer',
-            x: [Data[0]],
-            y: [0],
-            marker: {size: Params.markerSize}
-        }], layout: {
-            xaxis: {range: [-5, 5]}
-        }}, {}, {showSendToCloud:true});
-
-    while (i < stepNumber + 1) {
-        tracing(i, Data);
-        i++;
+        coinTossOnceMechanism();
+        };
+    } else {
+        coinTossOnceMechanism();
     };
-
-    animeData = info.slice(0, 2);
-    stepWidthData = incrementData;
-
-    //funcAdjustInt.coinFlip();
-
-    console.timeEnd('timer1');
 };
 
-/*function toss(value) {
-    if (value === 1) {
-        coin.src = "Pound_coin_front.png";
-    }
-    else if (value === -1) {
-        coin.src = "Pound_coin_back.png";
-    }
-};*/
+function coinTossOnceMechanism() {
+    xData = [];
+    numberOfTosses.disabled = false;
+    text.hidden = true;
+    tossMultipleButton.innerHTML = 'Toss Multiple Times';
 
+    Plotly.purge(graph);
+    tossOnceButton.disabled = true;
+    let info = dataPreparation(1);
+    let incrementData = info[1];
 
+    coinTossAnimate(incrementData[0]);
 
-/*function tossAnime() {
-    coin.src='./Pound_coin_front.png';
+    walkData = [incrementData[0] + currentPos];
+
     setTimeout(function() {
-        coin.src='./Pound_coin_back.png'
-    }, 1);
-}*/
+        tracing(1, walkData);
+        currentPos = walkData[0];
+    }, 1000)
 
-/*function generateToss() {
-    let n = 0;
-    let tempID = setInterval(function() {
-        tossAnime();
-        n+=1;
-        if (n>150) {
-            clearInterval(tempID);
-        }
-    }, 2)
-}*/
+    setTimeout(function() {
+        tossOnceButton.disabled = false;
+    }, 2000);
+}
 
-/*let n = 0;
-    setInterval(function() {
-        toss(stepWidthData[n]);
-        n+=1;
-    }, 1000);*/
-    /*class AdjustingInterval {
-        constructor(interval) {
-            var that = this;
-            var expected, timeout;
-            this.interval = interval;
-            this.n = 0;
-            this.start = function () {
-                expected = Date.now() + this.interval;
-                timeout = setTimeout(step, this.interval);
-            };
-            this.stop = function () {
-                clearTimeout(timeout);
-            };
-            function step() {
-                var drift = Date.now() - expected;
-                if (drift > that.interval) {
-                    errorFunc()} else {
-                    coinFlip(n);
-                    expected += that.interval;
-                    timeout = setTimeout(step, Math.max(0, that.interval - drift));
-                }
-            }
-            ;
-            function coinFlip() {
-                toss(stepWidthData[this.n]);
-                this.n += 1;
-            }
-            ;
-            function errorFunc() {
-                console.warn('The picture has grown out of sync.');
-            }
-            ;
-        }
+
+function coinTossAnimate(value) {
+    let coinFlipRate = 100;
+
+    setTimeout(function() {
+        coinFlip.front();
+        setTimeout(function() {
+            coinFlip.back();
+            setTimeout(function() {
+                coinFlip.front();
+                setTimeout(function() {
+                    coinFlip.back();
+                    setTimeout(function() {
+                        coinFlip.front();
+                        setTimeout(function() {
+                            coinFlip.back();
+                            setTimeout(function() {
+                                coinFlip.front();
+                                setTimeout(function() {
+                                    coinFlip.back();
+                                }, coinFlipRate)
+                            }, coinFlipRate)
+                        }, coinFlipRate)
+                    }, coinFlipRate)
+                }, coinFlipRate)
+            }, coinFlipRate)
+        }, coinFlipRate)
+    }, coinFlipRate)
+
+    setTimeout(function() {
+        if (value === 1) {
+            coin.src = "Pound_coin_front.png";
+        } else if (value === -1) {
+            coin.src = "Pound_coin_back.png";
+        };
+    }, 850);
+};
+
+function submit() {
+    numberOfTosses.disabled = true;
+
+    if (numberOfTosses.value < 10) {
+        numberOfTosses.value = 10;
+    } else if (numberOfTosses.value > 1000) {
+        numberOfTosses.value = 1000;
+    } else if (!Number.isInteger(numberOfTosses.value)) {
+        if (numberOfTosses.value - Math.floor(numberOfTosses.value) < 0.5) {
+            numberOfTosses.value = Math.floor(numberOfTosses.value);
+        } else {
+            numberOfTosses.value = Math.ceil(numberOfTosses.value);
+        };
     };
 
-let funcAdjustInt = new AdjustingInterval(1000);*/
+    tossMultipleButton.innerHTML = 'Toss ' + numberOfTosses.value + ' Times';
+};
 
-startAnimation();
+function coinTossMultiple() {
+    if (numberOfTosses.disabled === false) {
+        alert('Please select a number of tosses first!')
+    } else {
+
+    currentPos = 0;
+    Plotly.purge(flight);
+    hasTriedMultiple = true;
+    tossMultipleButton.disabled = true;
+
+    let value = numberOfTosses.value;
+
+    coinTossAnimate(getIncrementData(1)[0]);
+
+    setTimeout(function() {
+        Plotly.newPlot(graph, {
+            data: [{
+                type: 'histogram',
+                histnorm: '',
+                name: 'Times traversing through a point',
+                x: xData,
+                xbins: {size: 1}
+            }], layout: {
+                title: 'Number of times the walker traverses through a point'
+            }
+        , config: {responsive: true}}, {}, {showSendToCloud:true});
+    }, 1000)
+
+    xData.push(dataPreparation(value)[0]);
+    xData = flatDeep(xData);
+
+    setTimeout(function() {
+        tossMultipleButton.disabled = false;
+    }, 1100);
+
+    text.hidden = false;
+};
+};
+
+function flatDeep(arr, d = Infinity) {
+    return d > 0 ? arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? flatDeep(val, d - 1) : val), [])
+                 : arr.slice();
+ };
+
+function stop() {
+    if (confirm('Are you sure you want to refresh this page?')) {
+        xData = [];
+        numberOfTosses.disabled = false;
+        numberOfTosses.value = 100;
+        text.hidden = true;
+        tossMultipleButton.innerHTML = 'Toss Multiple Times';
+        currentPos = 0;
+        hasTriedMultiple = false;
+
+        Plotly.newPlot(flight, {
+            data: [{
+                mode: 'markers',
+                type: 'scatter',
+                x: [0],
+                y: [0],
+                marker: {size: Params.markerSize},
+                name: 'pointer'}
+            ], layout: {
+                xaxis: {range: [-5, 5]},
+        }, config: {responsive: true}}, {}, {showSendToCloud:true});
+    
+        Plotly.purge(graph);
+        coin.src = "Pound_coin_front.png";
+    };
+};
+
+hiddenText.onmouseenter = function() {
+    hiddenText.style.backgroundColor = 'transparent';
+    hiddenText.style.color = 'red';
+};
+
+hiddenText.onmouseleave = function() {
+    hiddenText.style.backgroundColor = 'black';
+    hiddenText.style.color = 'black';
+};

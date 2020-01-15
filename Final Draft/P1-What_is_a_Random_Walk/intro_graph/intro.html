@@ -35,7 +35,26 @@
 
     <div id='flight'></div>
 
-    <!--<img id='coin' src='./Pound_coin_front.png'></img>-->
+    <div id='graph' display='none'></div>
+
+    <div id='coin div'>
+      <img id='coin' src='./Pound_coin_front.png'></img>
+    </div>
+
+    <button id='tossOnceButton' onclick="javascript:coinTossOnce();">Toss Once</button>
+
+    <button id='tossMultipleButton' onclick="javascript:coinTossMultiple();">Toss Multiple Times</button>
+
+    <button onclick="javascript:stop();">Clear</button>
+
+    <div id="form">
+      # of tosses (10-1000): <input type="number" id='numberOfTosses' value="100" min="10" max="1000">
+    </div>
+
+    <button onclick="javasript:submit();">Submit</button>
+
+    <div id='text' hidden><span>Keep tossing to see the converging distribution. </span><span id='hiddenText'>Surprise, surprise, it's a Gaussian!</span></div>
+
 
     <script defer src='./intro_graph.js'></script>
 
